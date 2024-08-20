@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ member.username }}의 프로필 페이지</h1>
+
+    <div>
+        <h2>username : {{ member.username }}</h2>
+
+        <h2>가입일 : {{ member.date_joined }}</h2>
+
+        {% if request.user != member %}
+            <form action="{% url 'users:follow' member.pk %}" method="POST">
+                {% csrf_token %}
+                {% if request.user in member.followers.all %}
+                    <input type="submit" value="언팔로우">
+                {% else %}
+                    <input type="submit" value="팔로우">
+                {% endif %}
+            </form>
+        {% endif %}        
+    </div>
+
+{% endblock content %}
