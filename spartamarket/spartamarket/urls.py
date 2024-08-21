@@ -32,7 +32,7 @@ urlpatterns = [
     path("products/", include("products.urls")),
 ]
 
-# 개발중인 경우ㅎ
+# 개발중인 경우
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
