@@ -24,13 +24,15 @@ from products import views
 
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path("index/", views.index, name="index"),
     path("accounts/", include("accounts.urls")),
     path("users/", include("users.urls")),
+    path("products/", include("products.urls")),
 ]
 
-# 개발중인 경우
+# 개발중인 경우ㅎ
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
