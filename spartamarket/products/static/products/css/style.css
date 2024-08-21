@@ -1,12 +1,12 @@
 /* static/css/style.css */
 .navbar {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 @media (min-width: 992px) {
     .navbar {
-        padding-left: 30px;
-        padding-right: 30px;
+        padding-left: 40px;
+        padding-right: 40px;
     }
 }
