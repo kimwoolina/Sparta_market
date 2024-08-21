@@ -2,6 +2,13 @@
 {% load static %}
 
 {% block content %}
-    <h2>중고거래 index 페이지</h2>
-{% endblock %}
+    <h1>INDEX PAGE</h1>
 
+    <img src="{% static 'products/teddy-bear.png' %}">
+
+    <ul>
+    <li><a href="{% url 'products:products' %}">글목록</a></li>
+    <li><a href="{% url 'users:users' %}">Users</a></li>
+    </ul>
+
+{% endblock content %}

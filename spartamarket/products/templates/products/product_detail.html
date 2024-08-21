@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>글 상세 페이지</h2>
+    <p>제목: {{ product.title }}</p>
+    <p>작성자: {{ product.author.username }}</p>
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}">
+    {% endif %}
+
+    <p>내용: {{ product.content }}</p>
+    <p>작성일시: {{ product.created_at }}</p>
+    <p>수정일시: {{ product.updated_at }}</p>
+
+    <a href="{% url 'products:products' %}">목록보기</a>
+
+    {% if user == product.author %}
+        <a href="{% url 'products:update' product.pk %}">
+            <button>수정하기</button>
+        </a>
+
+        <form action="{% url 'products:delete' product.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+        </form>
+    {% endif %}
+    
+    {% if request.user.is_authenticated %}
+    <br>
+    <hr>
+    <h3>댓글 {{ comments|length }}개</h3>
+    <form action="{% url 'products:comment_create' product.pk %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" value="댓글작성">
+    </form>
+    {% endif %}
+
+    {% for comment in comments %}
+    <ul>
+        <li>{{ comment.content }} - {{ comment.user.username }}</li>
+
+        {% if user == comment.user %}
+        <form action="{% url 'products:comment_delete' product.pk comment.pk%}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+        </form>
+        {% endif %}
+        
+    </ul>
+
+    {% empty %}
+    <p>댓글이 없습니다.</p>
+
+    {% endfor %}
+
+{% endblock content %}
