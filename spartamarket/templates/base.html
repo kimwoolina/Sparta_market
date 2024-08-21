@@ -44,9 +44,11 @@
                         <button type="submit" class="btn btn-link nav-link">로그아웃</button>
                     </form>
                 </li>
+                <!--
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:update' %}">회원정보수정</a>
                 </li>
+                -->
                 <li class="nav-item">
                     <form action="{% url 'accounts:delete' %}" method="POST" class="form-inline">
                         {% csrf_token %}
@@ -62,8 +64,6 @@
                 </li>
                 {% endif %}
                 
-                
-
 
             </ul>
         </div>
