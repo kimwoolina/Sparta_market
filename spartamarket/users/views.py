@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib.auth import get_user_model
-
+from products.models import Product
+from django.db.models import F, FloatField, ExpressionWrapper
 
 def users(request):
     return render(request, "users/users.html")
@@ -41,18 +42,39 @@ def follow(request, user_id):
 # 사용자가 등록한 물품 목록
 def user_products(request, username):
     member = get_object_or_404(get_user_model(), username=username)
-    products = member.products.all()  
+    products = member.products.all()
     context = {
         'products': products,
+        'page_title': f"{member.username}님의 매물목록",
+        'username': member.username,
+        #'page_type': 'product',
     }
-    return render(request, 'products/products.html', context)
+    return render(request, 'users/products.html', context)
 
 
 # 사용자가 좋아요를 누른 물품 목록
 def user_liked_products(request, username):
     member = get_object_or_404(get_user_model(), username=username)
-    liked_products = member.like_products.all()  
+    liked_products = member.like_products.all()
     context = {
         'products': liked_products,
+        'page_title': f"{member.username}님의 관심목록",
+        'username': member.username,
+        #'page_type': 'liked',
     }
-    return render(request, 'products/products.html', context)
+    return render(request, 'users/products.html', context)
+
+
+# 유저 페이지에서 찜
+@require_POST
+def like(request, pk):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=pk)
+        if product.like_users.filter(pk=request.user.pk).exists():
+            product.like_users.remove(request.user)
+        else:
+            product.like_users.add(request.user)
+
+        next_url = request.POST.get('next', 'users:user_products')
+        return redirect(next_url)
+    return redirect("accounts:login")

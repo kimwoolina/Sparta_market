@@ -1,23 +1,23 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "products_list.html" %}
 
-{% block content %}
-<div class="container">
-    <br>
-    <h2 class="page-title text-center">중고거래 매물</h2>
-    <br>
-    <div class="actions mb-4 text-center">
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'products:create' %}" class="btn btn-primary">
-                새로운 글작성
-            </a>
-        {% else %}
-            <a href="{% url 'accounts:login' %}" class="btn btn-secondary">
-                로그인하고 글 작성하기
-            </a>
-        {% endif %}
-    </div>
+{% block title %}중고거래 매물{% endblock title %}
 
+{% block create_product %}
+<div class="actions mb-4 text-center">
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'products:create' %}" class="btn btn-primary">
+            새로운 글작성
+        </a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">
+            로그인하고 글 작성하기
+        </a>
+    {% endif %}
+</div>    
+{% endblock create_product %}
+
+
+{% block sorting %}
     <div class="sort-options mb-4 text-end"> <!-- Changed to text-end for right alignment -->
         <ul class="sort-list list-unstyled d-inline-flex">
             <li class="sort-item me-3">
@@ -32,191 +32,8 @@
             </li>
         </ul>
     </div>
+    {% endblock sorting%}
 
-    <div class="row">
-        {% for product in products %}
-            <div class="col-md-4 mb-4">
-                <a href="{% url 'products:product_detail' product.pk %}" class="text-decoration-none">
-                    <div class="card product-card">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.title }}">
-                        {% else %}
-                            <img src="{% static 'products/images/default/default-product.jpg' %}" class="card-img-top product-image" alt="Default image">
-                        {% endif %}
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ product.title }}</h5>
-                            <p class="card-text text-muted">
-                                <span class="me-2">
-                                    <i class="bi bi-heart"></i> {{ product.like_users.count }}
-                                </span>
-                                <span>
-                                    <i class="bi bi-eye"></i> {{ product.view_cnt }}
-                                </span>
-                            </p>
-                            <form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">
-                                {% csrf_token %}
-                                {% if request.user in product.like_users.all %}
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="bi bi-heart-fill"></i> Unlike
-                                    </button>
-                                {% else %}
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="bi bi-heart"></i> Like
-                                    </button>
-                                {% endif %}
-                            </form>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-</div>
-
-<style>
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .page-title {
-        font-size: 2em;
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    .actions {
-        margin-bottom: 20px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        color: #fff;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        text-align: center;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-    }
-
-    .btn-secondary {
-        background-color: #6c757d;
-    }
-
-    .btn-primary:hover,
-    .btn-secondary:hover {
-        opacity: 0.8;
-    }
-
-    .sort-options {
-        margin-bottom: 20px;
-    }
-
-    .sort-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: inline-flex; /* Changed to inline-flex for horizontal layout */
-    }
-
-    .sort-item {
-        margin-right: 20px; /* Adjust spacing between items */
-    }
-
-    .sort-link {
-        display: inline-block;
-        padding: 10px 20px;
-        color: #999999; /* Gray color for inactive state */
-        text-decoration: none;
-        border-bottom: none; /* Remove underline */
-        transition: color 0.3s;
-    }
-
-    .sort-link:hover {
-        color: #999999; /* Keep color unchanged on hover */
-    }
-
-    .sort-link.active {
-        color: #007bff; /* Blue color for active state */
-        font-weight: bold;
-    }
-
-    .product-card {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .product-image {
-        width: 100%;
-        height: 230px;
-        /* Fixed height */
-        object-fit: cover;
-        /* Ensures the image covers the area without distortion */
-    }
-
-    .card-body {
-        flex-grow: 1;
-        text-align: center;
-    }
-
-    .product-title {
-        font-size: 1.25em;
-        color: #333;
-    }
-
-    .card-text {
-        font-size: 14px;
-    }
-
-    .like-form {
-        display: flex;
-        justify-content: center;
-    }
-
-    .btn-like {
-        padding: 8px 12px;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-    }
-
-    .like {
-        background-color: #28a745;
-        color: #fff;
-    }
-
-    .unlike {
-        background-color: #dc3545;
-        color: #fff;
-    }
-
-    .btn-like:hover {
-        opacity: 0.8;
-    }
-</style>
-
-<!-- Bootstrap Icons CDN -->
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
-
-<!-- Optional: Bootstrap CSS (if not included in base.html) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-
-{% endblock content %}
+{% block like_product_form %}
+<form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">
+{% endblock like_product_form %}
