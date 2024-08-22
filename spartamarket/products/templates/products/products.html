@@ -18,21 +18,21 @@
 
 
 {% block sorting %}
-    <div class="sort-options mb-4 text-end"> <!-- Changed to text-end for right alignment -->
-        <ul class="sort-list list-unstyled d-inline-flex">
-            <li class="sort-item me-3">
-                <a href="{% url 'products:product_list' %}?sort=latest" class="sort-link {% if request.GET.sort == 'latest' %}active{% endif %}">
-                    최신순
-                </a>
-            </li>
-            <li class="sort-item">
-                <a href="{% url 'products:product_list' %}?sort=popular" class="sort-link {% if request.GET.sort == 'popular' %}active{% endif %}">
-                    인기순
-                </a>
-            </li>
-        </ul>
-    </div>
-    {% endblock sorting%}
+<div class="sort-options mb-4 text-end"> <!-- Changed to text-end for right alignment -->
+    <ul class="sort-list list-unstyled d-inline-flex">
+        <li class="sort-item me-3">
+            <a href="{% url 'products:product_list' %}?sort=latest" class="sort-link {% if request.GET.sort == 'latest' %}active{% endif %}">
+                최신순
+            </a>
+        </li>
+        <li class="sort-item">
+            <a href="{% url 'products:product_list' %}?sort=popular" class="sort-link {% if request.GET.sort == 'popular' %}active{% endif %}">
+                인기순
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock sorting %}
 
 {% block like_product_form %}
 <form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">

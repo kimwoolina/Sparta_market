@@ -37,28 +37,24 @@ def product_detail(request, pk):
     return render(request, "products/product_detail.html", context)
 
 
+
 # 정렬
 def product_list(request):
     sort_by = request.GET.get('sort', 'latest')
     
     if sort_by == 'popular':
-        # 조회수(view_cnt)와 좋아요(like_users.count())를 50%씩 반영하여 가중 평균을 계산
         products = Product.objects.annotate(
-            likes_count=Count('like_users'),  # 좋아요 수 계산
-            popularity=ExpressionWrapper(
-                (F('view_cnt') * 0.5 + F('likes_count') * 0.5),
-                output_field=FloatField()
-            )
-        ).order_by('-popularity')  # 인기순으로 정렬
+            likes_count=Count('like_users')
+        ).order_by('-likes_count', '-view_cnt')
     else:
-        products = Product.objects.order_by('-created_at')  # 최신순으로 정렬
-
+        products = Product.objects.order_by('-created_at')
+    
     context = {
         'products': products,
-        'sort_by': sort_by  # 정렬 기준을 컨텍스트에 추가
+        'sort_by': sort_by
     }
 
-    return render(request, 'products/product_list.html', context)
+    return render(request, 'products/products.html', context)
 
 
 @login_required
