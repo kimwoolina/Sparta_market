@@ -3,6 +3,7 @@ from .models import Product, Comment
 from .forms import ProductForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
+from django.db.models import F, FloatField, ExpressionWrapper
 
 
 def index(request):
@@ -34,6 +35,21 @@ def product_detail(request, pk):
         "comments": comments,
     }
     return render(request, "products/product_detail.html", context)
+
+# 정렬
+def product_list(request):
+    sort_by = request.GET.get('sort', 'latest')
+    if sort_by == 'popular':
+        # 조회수(view_cnt)와 좋아요(likes_count)를 50%씩 반영하여 가중 평균을 계산
+        products = Product.objects.annotate(
+            popularity=ExpressionWrapper(
+                (F('view_cnt') * 0.5 + F('likes_count') * 0.5),
+                output_field=FloatField()
+            )
+        ).order_by('-popularity')  # 인기순으로 정렬
+    else:
+        products = Product.objects.order_by('-created_at')  # 최신순으로 정렬
+    return render(request, 'products/product_list.html', {'products': products})
 
 
 @login_required
