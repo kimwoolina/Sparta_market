@@ -1,15 +1,111 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>New Product</h2>
+<div class="container mt-4">
+    <h2 class="page-title">New Product</h2>
 
-<form action="{% url 'products:create' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">저장</button>
-</form>
+    <form action="{% url 'products:create' %}" method="POST" enctype="multipart/form-data" class="product-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-save">저장</button>
+            <a href="{% url 'products:products' %}" class="btn btn-back">목록으로</a>
+        </div>
+    </form>
+</div>
 
-<a href="{% url 'products:products' %}">목록으로</a>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 
+    .container {
+        max-width: 500px; /* Decrease container width */
+        margin: auto;
+        padding: 0 200px !important; /* Adjust horizontal padding */
+    }
+
+    .page-title {
+        font-size: 2rem;
+        margin-top: 100px !important; /* Top margin */
+        margin-bottom: 30px;
+        color: #333;
+        text-align: center;
+    }
+
+    .product-form .form-group {
+        margin-bottom: 25px;
+    }
+
+    .product-form .form-group input,
+    .product-form .form-group select,
+    .product-form .form-group textarea {
+        width: 100%;
+        padding: 10px; /* Adjust padding */
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    /* Adjust size for the price input field */
+    .product-form .form-group input[name="price"] {
+        width: auto;
+        max-width: 150px; /* Set max-width for price input */
+        padding: 8px; /* Adjust padding */
+    }
+
+    .product-form .form-group input[type="file"] {
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 6px;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .btn-save {
+        background-color: #007bff;
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-save:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-back {
+        background-color: #17a2b8; /* Change background color */
+        color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .btn-back:hover {
+        background-color: #138496; /* Darker shade on hover */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
 {% endblock content %}
