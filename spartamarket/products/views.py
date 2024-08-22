@@ -39,6 +39,7 @@ def product_detail(request, pk):
 # 정렬
 def product_list(request):
     sort_by = request.GET.get('sort', 'latest')
+    
     if sort_by == 'popular':
         # 조회수(view_cnt)와 좋아요(likes_count)를 50%씩 반영하여 가중 평균을 계산
         products = Product.objects.annotate(

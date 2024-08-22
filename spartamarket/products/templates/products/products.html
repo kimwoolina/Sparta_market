@@ -1,10 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container">
-    <h2 class="page-title">Products</h2>
-
-    <div class="actions">
+    <br>
+    <h2 class="page-title text-center">중고거래 매물</h2>
+    <br>
+    <div class="actions mb-4 text-center">
         {% if request.user.is_authenticated %}
             <a href="{% url 'products:create' %}" class="btn btn-primary">
                 새로운 글작성
@@ -16,38 +18,56 @@
         {% endif %}
     </div>
 
-    <div class="sort-options">
-        <form method="GET" action="{% url 'products:product_list' %}">
-            <label for="sort">정렬 기준:</label>
-            <select name="sort" id="sort" onchange="this.form.submit()">
-                <option value="latest" {% if request.GET.sort == 'latest' %}selected{% endif %}>최신순</option>
-                <option value="popular" {% if request.GET.sort == 'popular' %}selected{% endif %}>인기순</option>
-            </select>
-        </form>
+    <div class="sort-options mb-4 text-end"> <!-- Changed to text-end for right alignment -->
+        <ul class="sort-list list-unstyled d-inline-flex">
+            <li class="sort-item me-3">
+                <a href="{% url 'products:product_list' %}?sort=latest" class="sort-link {% if request.GET.sort == 'latest' %}active{% endif %}">
+                    최신순
+                </a>
+            </li>
+            <li class="sort-item">
+                <a href="{% url 'products:product_list' %}?sort=popular" class="sort-link {% if request.GET.sort == 'popular' %}active{% endif %}">
+                    인기순
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <div class="product-list">
+    <div class="row">
         {% for product in products %}
-            <div class="product-item">
-                {% if product.image %}
-                    <div class="product-image">
-                        <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                    </div>
-                {% endif %}
-                <div class="product-details">
-                    <a href="{% url 'products:product_detail' product.pk %}" class="product-link">
-                        <h3 class="product-title">{{ product.title }}</h3>
-                    </a>
-
-                    <form action="{% url 'products:like' product.pk %}" method="POST" class="like-form">
-                        {% csrf_token %}
-                        {% if request.user in product.like_users.all %}
-                            <input type="submit" value="Unlike" class="btn btn-like unlike">
+            <div class="col-md-4 mb-4">
+                <a href="{% url 'products:product_detail' product.pk %}" class="text-decoration-none">
+                    <div class="card product-card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.title }}">
                         {% else %}
-                            <input type="submit" value="Like" class="btn btn-like like">
+                            <img src="{% static 'products/images/default/default-product.jpg' %}" class="card-img-top product-image" alt="Default image">
                         {% endif %}
-                    </form>
-                </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text text-muted">
+                                <span class="me-2">
+                                    <i class="bi bi-heart"></i> {{ product.like_users.count }}
+                                </span>
+                                <span>
+                                    <i class="bi bi-eye"></i> {{ product.view_cnt }}
+                                </span>
+                            </p>
+                            <form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">
+                                {% csrf_token %}
+                                {% if request.user in product.like_users.all %}
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="bi bi-heart-fill"></i> Unlike
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-heart"></i> Like
+                                    </button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </a>
             </div>
         {% endfor %}
     </div>
@@ -63,13 +83,11 @@
     .page-title {
         font-size: 2em;
         margin-bottom: 20px;
-        text-align: center;
         color: #333;
     }
 
     .actions {
         margin-bottom: 20px;
-        text-align: center;
     }
 
     .btn {
@@ -91,72 +109,80 @@
         background-color: #6c757d;
     }
 
-    .btn-primary:hover, .btn-secondary:hover {
+    .btn-primary:hover,
+    .btn-secondary:hover {
         opacity: 0.8;
     }
 
     .sort-options {
         margin-bottom: 20px;
-        text-align: center;
     }
 
-    .sort-options select {
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+    .sort-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: inline-flex; /* Changed to inline-flex for horizontal layout */
     }
 
-    .product-list {
+    .sort-item {
+        margin-right: 20px; /* Adjust spacing between items */
+    }
+
+    .sort-link {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #999999; /* Gray color for inactive state */
+        text-decoration: none;
+        border-bottom: none; /* Remove underline */
+        transition: color 0.3s;
+    }
+
+    .sort-link:hover {
+        color: #999999; /* Keep color unchanged on hover */
+    }
+
+    .sort-link.active {
+        color: #007bff; /* Blue color for active state */
+        font-weight: bold;
+    }
+
+    .product-card {
+        height: 100%;
         display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .product-item {
+        flex-direction: column;
         border: 1px solid #ddd;
         border-radius: 8px;
-        padding: 20px;
-        width: 100%;
-        max-width: 300px;
         background-color: #f9f9f9;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .product-item:hover {
+    .product-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
 
     .product-image {
-        overflow: hidden;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
-
-    .product-image img {
         width: 100%;
-        height: auto;
-        display: block;
+        height: 230px;
+        /* Fixed height */
         object-fit: cover;
-        border-radius: 8px;
+        /* Ensures the image covers the area without distortion */
     }
 
-    .product-details {
+    .card-body {
+        flex-grow: 1;
         text-align: center;
-    }
-
-    .product-link {
-        text-decoration: none;
-        color: #333;
     }
 
     .product-title {
         font-size: 1.25em;
-        margin-bottom: 10px;
         color: #333;
+    }
+
+    .card-text {
+        font-size: 14px;
     }
 
     .like-form {
@@ -166,7 +192,6 @@
 
     .btn-like {
         padding: 8px 12px;
-        border: none;
         border-radius: 5px;
         font-size: 14px;
         cursor: pointer;
@@ -186,5 +211,12 @@
         opacity: 0.8;
     }
 </style>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+
+<!-- Optional: Bootstrap CSS (if not included in base.html) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
 {% endblock content %}
