@@ -14,6 +14,8 @@
     <p>작성일시: {{ product.created_at }}</p>
     <p>수정일시: {{ product.updated_at }}</p>
 
+    <p>{{ like_count }}명이 이 글을 좋아합니다.</p>
+
     <a href="{% url 'products:products' %}">목록보기</a>
 
     {% if user == product.author %}
