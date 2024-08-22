@@ -44,50 +44,51 @@
 
     <div class="row">
         {% if products %}
-            {% for product in products %}
-                <div class="col-md-4 mb-4">
-                    <a href="{% url 'products:product_detail' product.pk %}" class="text-decoration-none">
-                        <div class="card product-card">
-                            {% if product.image %}
-                                <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.title }}">
-                            {% else %}
-                                <img src="{% static 'products/images/default/default-product.jpg' %}" class="card-img-top product-image" alt="Default image">
-                            {% endif %}
-                            <div class="card-body text-center">
-                                <h5 class="card-title">{{ product.title }}</h5>
-                                <p class="card-text text-muted">
-                                    <span class="me-2">
-                                        <i class="bi bi-heart"></i> {{ product.like_users.count }}
-                                    </span>
-                                    <span>
-                                        <i class="bi bi-eye"></i> {{ product.view_cnt }}
-                                    </span>
-                                </p>
-                                {% block like_product_form %}
-                                <!-- 
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'products:product_detail' product.pk %}" class="text-decoration-none">
+                <div class="card product-card">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.title }}">
+                    {% else %}
+                    <img src="{% static 'products/images/default/default-product.jpg' %}"
+                        class="card-img-top product-image" alt="Default image">
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text text-muted">
+                            <span class="me-2">
+                                <i class="bi bi-heart"></i> {{ product.like_users.count }}
+                            </span>
+                            <span>
+                                <i class="bi bi-eye"></i> {{ product.view_cnt }}
+                            </span>
+                        </p>
+                        {% block like_product_form %}
+                        <!-- 
                                 <form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">
                                 -->
-                                {% endblock like_product_form %}
-                                    {% csrf_token %}
-                                    {% if request.user in product.like_users.all %}
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="bi bi-heart-fill"></i> Unlike
-                                        </button>
-                                    {% else %}
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="bi bi-heart"></i> Like
-                                        </button>
-                                    {% endif %}
-                                </form>
-                            </div>
-                        </div>
-                    </a>
+                        {% endblock like_product_form %}
+                        {% csrf_token %}
+                        {% if request.user in product.like_users.all %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-heart-fill"></i> Unlike
+                        </button>
+                        {% else %}
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-heart"></i> Like
+                        </button>
+                        {% endif %}
+                        </form>
+                    </div>
                 </div>
-            {% endfor %}
+            </a>
+        </div>
+        {% endfor %}
         {% else %}
-            <div class="col-12 text-center">
-                <p>등록된 매물이 없습니다.</p>
-            </div>
+        <div class="col-12 text-center">
+            <p>등록된 매물이 없습니다.</p>
+        </div>
         {% endif %}
     </div>
 </div>
@@ -141,28 +142,34 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        display: inline-flex; /* Changed to inline-flex for horizontal layout */
+        display: inline-flex;
+        /* Changed to inline-flex for horizontal layout */
     }
 
     .sort-item {
-        margin-right: 20px; /* Adjust spacing between items */
+        margin-right: 20px;
+        /* Adjust spacing between items */
     }
 
     .sort-link {
         display: inline-block;
         padding: 10px 20px;
-        color: #999999; /* Gray color for inactive state */
+        color: #999999;
+        /* Gray color for inactive state */
         text-decoration: none;
-        border-bottom: none; /* Remove underline */
+        border-bottom: none;
+        /* Remove underline */
         transition: color 0.3s;
     }
 
     .sort-link:hover {
-        color: #999999; /* Keep color unchanged on hover */
+        color: #999999;
+        /* Keep color unchanged on hover */
     }
 
     .sort-link.active {
-        color: #007bff; /* Blue color for active state */
+        color: #007bff;
+        /* Blue color for active state */
         font-weight: bold;
     }
 

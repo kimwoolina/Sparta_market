@@ -9,4 +9,4 @@
 {% block like_product_form %}
 <form action="{% url 'users:like' product.pk %}" method="POST" class="mt-2 d-inline">
     <input type="hidden" name="next" value="{{ request.get_full_path }}">
-{% endblock like_product_form %}
+    {% endblock like_product_form %}
