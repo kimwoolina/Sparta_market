@@ -3,7 +3,7 @@ from .models import Product, Comment
 from .forms import ProductForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
-from django.db.models import F, FloatField, ExpressionWrapper, Count
+from django.db.models import Count
 
 
 def index(request):
@@ -77,16 +77,18 @@ def create(request):
 @require_http_methods(["GET", "POST"])
 def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    
+    # Check if the current user is the author of the product
     if product.author != request.user:
-        if request.method == "POST":
-            form = ProductForm(request.POST, instance=product)
-            if form.is_valid():
-                product = form.save()
-                return redirect("products:product_detail", product.pk)
-        else:
-            form = ProductForm(instance=product)
+        return redirect("products:products")  # Redirect if the user is not the author
+
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("products:product_detail", product.pk)
     else:
-        return redirect("products:products")
+        form = ProductForm(instance=product)
 
     context = {
         "form": form,
