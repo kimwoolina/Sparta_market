@@ -19,9 +19,14 @@ def products(request):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
+
+    product.increment_view_cnt() # 조회수 증가
+
     like_count = product.like_users.count() # count likes
+
     comment_form = CommentForm()
     comments = product.comments.all().order_by("-pk")
+
     context = {
         "product": product,
         "like_count" : like_count,
