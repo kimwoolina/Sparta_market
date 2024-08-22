@@ -48,13 +48,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:update' %}">회원정보수정</a>
                 </li>
-                -->
+                
                 <li class="nav-item">
                     <form action="{% url 'accounts:delete' %}" method="POST" class="form-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-link nav-link">회원탈퇴</button>
                     </form>
                 </li>
+                -->
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>

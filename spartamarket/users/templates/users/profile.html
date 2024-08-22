@@ -22,6 +22,11 @@
     <button>
         <a class="nav-link" href="{% url 'accounts:update' %}">회원정보수정</a>
     </button>
+
+    <form action="{% url 'accounts:delete' %}" method="POST" class="form-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link nav-link">회원탈퇴</button>
+    </form>
     {% else %}
     <form action="{% url 'users:follow' member.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
