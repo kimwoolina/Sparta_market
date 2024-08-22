@@ -56,6 +56,9 @@
                     {% endif %}
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-price text-dark">
+                            <strong>{{ product.price}} 원</strong>
+                        </p>
                         <p class="card-text text-muted">
                             <span class="me-2">
                                 <i class="bi bi-heart"></i> {{ product.like_users.count }}
@@ -66,8 +69,8 @@
                         </p>
                         {% block like_product_form %}
                         <!-- 
-                                <form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">
-                                -->
+                        <form action="{% url 'products:like' product.pk %}" method="POST" class="mt-2 d-inline">
+                        -->
                         {% endblock like_product_form %}
                         {% csrf_token %}
                         {% if request.user in product.like_users.all %}
@@ -207,8 +210,15 @@
         color: #333;
     }
 
+    .card-price {
+        font-size: 1.25em;
+        color: #000; /* Black color for price */
+        margin-bottom: 10px; /* Space below the price */
+    }
+
     .card-text {
         font-size: 14px;
+        margin-bottom: 20px; /* Space below the likes and views */
     }
 
     .like-form {
