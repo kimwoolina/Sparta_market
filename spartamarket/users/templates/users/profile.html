@@ -11,8 +11,8 @@
     <h2>가입일 : {{ member.date_joined }}</h2>
 
     <!-- 사용자 등록 물품 수와 좋아하는 물품 수 표시 -->
-    <h2>내 매물: {{ products_count }}</h2>
-    <h2>관심목록 : {{ liked_products_count }}</h2>
+    <h2><a href="{% url 'users:user_products' member.username %}">내 매물: {{ products_count }}</a></h2>
+    <h2><a href="{% url 'users:user_liked_products' member.username %}">관심목록 : {{ liked_products_count }}</a></h2>
 
     <!-- 팔로워 수와 팔로우 수 -->
     <h2>팔로워 수: {{ member.user_followers.count }}</h2>
@@ -33,5 +33,4 @@
     </form>
     {% endif %}
 </div>
-
 {% endblock content %}

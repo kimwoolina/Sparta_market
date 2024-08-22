@@ -9,14 +9,6 @@ def users(request):
 
 def profile(request, username):
     member = get_object_or_404(get_user_model(), username=username)
-    context = {
-        "member": member,
-    }
-    return render(request, "users/profile.html", context)
-
-
-def profile(request, username):
-    member = get_object_or_404(get_user_model(), username=username)
     
     # 사용자가 등록한 물품 수
     products_cnt = member.products.count()
@@ -32,6 +24,7 @@ def profile(request, username):
     return render(request, "users/profile.html", context)
 
 
+
 @require_POST
 def follow(request, user_id):
     if request.user.is_authenticated:
@@ -43,3 +36,23 @@ def follow(request, user_id):
                 member.user_followers.add(request.user)
         return redirect("users:profile", username=member.username)
     return redirect("accounts:login")
+
+
+# 사용자가 등록한 물품 목록
+def user_products(request, username):
+    member = get_object_or_404(get_user_model(), username=username)
+    products = member.products.all()  
+    context = {
+        'products': products,
+    }
+    return render(request, 'products/products.html', context)
+
+
+# 사용자가 좋아요를 누른 물품 목록
+def user_liked_products(request, username):
+    member = get_object_or_404(get_user_model(), username=username)
+    liked_products = member.like_products.all()  
+    context = {
+        'products': liked_products,
+    }
+    return render(request, 'products/products.html', context)
