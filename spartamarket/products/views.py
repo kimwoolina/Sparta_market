@@ -3,7 +3,7 @@ from .models import Product, Comment
 from .forms import ProductForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
-from django.db.models import F, FloatField, ExpressionWrapper
+from django.db.models import F, FloatField, ExpressionWrapper, Count
 
 
 def index(request):
@@ -21,28 +21,30 @@ def products(request):
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
-    product.increment_view_cnt() # 조회수 증가
+    product.increment_view_cnt()  # 조회수 증가
 
-    like_count = product.like_users.count() # count likes
+    like_count = product.like_users.count()  # count likes
 
     comment_form = CommentForm()
     comments = product.comments.all().order_by("-pk")
 
     context = {
         "product": product,
-        "like_count" : like_count,
+        "like_count": like_count,
         "comment_form": comment_form,
         "comments": comments,
     }
     return render(request, "products/product_detail.html", context)
+
 
 # 정렬
 def product_list(request):
     sort_by = request.GET.get('sort', 'latest')
     
     if sort_by == 'popular':
-        # 조회수(view_cnt)와 좋아요(likes_count)를 50%씩 반영하여 가중 평균을 계산
+        # 조회수(view_cnt)와 좋아요(like_users.count())를 50%씩 반영하여 가중 평균을 계산
         products = Product.objects.annotate(
+            likes_count=Count('like_users'),  # 좋아요 수 계산
             popularity=ExpressionWrapper(
                 (F('view_cnt') * 0.5 + F('likes_count') * 0.5),
                 output_field=FloatField()
@@ -50,7 +52,13 @@ def product_list(request):
         ).order_by('-popularity')  # 인기순으로 정렬
     else:
         products = Product.objects.order_by('-created_at')  # 최신순으로 정렬
-    return render(request, 'products/product_list.html', {'products': products})
+
+    context = {
+        'products': products,
+        'sort_by': sort_by  # 정렬 기준을 컨텍스트에 추가
+    }
+
+    return render(request, 'products/product_list.html', context)
 
 
 @login_required
