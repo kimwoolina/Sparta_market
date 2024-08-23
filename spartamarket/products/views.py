@@ -1,13 +1,18 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import Product, Comment
-from .forms import ProductForm, CommentForm
+from .forms import ProductForm, CommentForm, SearchForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
 from django.db.models import Count
+from django.db.models import Q
 
 
 def index(request):
-    return render(request, "products/index.html")
+    products = Product.objects.all().order_by("-pk")
+    context = {
+        "products": products,
+    }
+    return render(request, "products/products.html", context)
 
 
 def products(request):
@@ -152,3 +157,26 @@ def detail_like(request, pk):
             product.like_users.add(request.user)  # 좋아요
         return redirect("products:product_detail", pk=product.pk)  # pk를 포함하여 리다이렉트
     return redirect("accounts:login")
+
+
+# 검색
+def search(request):
+    form = SearchForm(request.GET or None)
+    products = Product.objects.none()  # 기본적으로 빈 쿼리셋
+    
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        # 검색 로직
+        products = Product.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(author__username__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    
+    context = {
+        'form': form,
+        'products': products,
+        'search_query': form.cleaned_data['query'] if form.is_valid() else ''
+    }
+    return render(request, 'products/products.html', context)

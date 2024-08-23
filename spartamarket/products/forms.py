@@ -38,3 +38,8 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = "__all__"
         exclude = ("product", "user")
+
+
+# 검색 폼
+class SearchForm(forms.Form):
+    query = forms.CharField(label='검색어', max_length=100, required=False)       
