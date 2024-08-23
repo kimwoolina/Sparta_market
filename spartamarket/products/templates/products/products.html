@@ -16,9 +16,8 @@
 </div>    
 {% endblock create_product %}
 
-
 {% block sorting %}
-<div class="sort-options mb-4 text-end"> <!-- Changed to text-end for right alignment -->
+<div class="sort-options mb-4 d-flex justify-content-end">
     <ul class="sort-list list-unstyled d-inline-flex">
         <li class="sort-item me-3">
             <a href="{% url 'products:product_list' %}?sort=latest" class="sort-link {% if request.GET.sort == 'latest' %}active{% endif %}">

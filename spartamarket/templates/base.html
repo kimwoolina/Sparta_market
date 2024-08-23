@@ -37,13 +37,22 @@
             margin-bottom: 20px;
             /* 아이콘 위아래 여백 조정 */
         }
+
+        .navbar-brand img {
+            max-height: 40px;
+            /* 로고 이미지의 최대 높이 조정 */
+            max-width: 150px; /* 로고 이미지의 최대 가로폭 조정 */
+            /* 필요에 따라 적절한 값을 조정 */
+        }
     </style>
 </head>
 
 <body>
     <!-- Navigation Bar -->
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'index' %}">스파르타 마켓</a>
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'images/spart_market_logo.png' %}" alt="Sparta Market Logo">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -51,7 +60,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">중고거래</a>
+                    <a class="nav-link" href="{% url 'products:products' %}">중고거래</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -61,8 +70,7 @@
             <ul class="navbar-nav ml-3">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'users:profile' request.user %}">Hello, {{ request.user.username
-                        }}</a>
+                    <a class="nav-link" href="{% url 'users:profile' request.user %}">Hello, {{request.user.username}}</a>
                 </li>
                 <li class="nav-item">
                     <form action="{% url 'accounts:logout' %}" method="POST" class="form-inline">
@@ -103,8 +111,7 @@
                 <a href="https://github.com/kimwoolina/Sparta_market" target="_blank" class="social-icon">
                     <i class="bi bi-github"></i>
                 </a>
-                <a href="https://www.notion.so/teamsparta/538b435036144d2496aee007ff8d513b" target="_blank"
-                    class="social-icon">
+                <a href="https://www.notion.so/teamsparta/538b435036144d2496aee007ff8d513b" target="_blank" class="social-icon">
                     <i class="bi bi-file-earmark-text"></i>
                 </a>
                 <a href="#" target="_blank" class="social-icon">
