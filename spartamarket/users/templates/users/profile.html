@@ -1,41 +1,182 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>안녕하세요. {{ member.username }}님!</h1>
+<div class="container my-4">
+    <div class="profile-header text-center">
+        <br>
+        <h1>안녕하세요, {{ member.username }}님!</h1>
+        <br>
 
-<div>
-    {% if member.profile_image %}
-    <img src="{{ member.profile_image.url }}" alt="Profile Image">
-    {% endif %}
-
-    <h2>가입일 : {{ member.date_joined }}</h2>
-
-    <!-- 사용자 등록 물품 수와 좋아하는 물품 수 표시 -->
-    <h2><a href="{% url 'users:user_products' member.username %}">내 매물: {{ products_count }}</a></h2>
-    <h2><a href="{% url 'users:user_liked_products' member.username %}">관심목록 : {{ liked_products_count }}</a></h2>
-
-    <!-- 팔로워 수와 팔로우 수 -->
-    <h2>팔로워 수: {{ member.user_followers.count }}</h2>
-    <h2>팔로우 수: {{ member.user_followings.count }}</h2>
-
-    {% if request.user == member %}
-    <button>
-        <a class="nav-link" href="{% url 'accounts:update' %}">회원정보수정</a>
-    </button>
-
-    <form action="{% url 'accounts:delete' %}" method="POST" class="form-inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link nav-link">회원탈퇴</button>
-    </form>
-    {% else %}
-    <form action="{% url 'users:follow' member.pk %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% if request.user in member.user_followers.all %}
-        <input type="submit" value="언팔로우">
+        <!-- 프로필 이미지 -->
+        {% if member.profile_image %}
+        <img src="{{ member.profile_image.url }}" alt="Profile Image" class="profile-image img-fluid rounded-circle">
         {% else %}
-        <input type="submit" value="팔로우">
+        <div class="profile-image-placeholder img-fluid rounded-circle"></div>
         {% endif %}
-    </form>
-    {% endif %}
+
+        <!-- 가입일 표시 -->
+        <h2 class="mt-2 text-muted small">가입일: {{ member.date_joined }}</h2>
+    </div>
+
+    <br>
+    <div class="profile-stats text-center my-4">
+        <!-- 사용자 등록 물품 수와 좋아하는 물품 수 표시 -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="profile-stat-item">
+                <h3>
+                    <i class="bi bi-box"></i> <!-- 아이콘 -->
+                    <a href="{% url 'users:user_products' member.username %}" class="profile-link">내 매물</a>
+                </h3>
+                <p class="profile-stat-count">{{ products_count }}</p> <!-- 매물 수 표시 -->
+            </div>
+            <div class="profile-stat-item">
+                <h3>
+                    <i class="bi bi-heart"></i> <!-- 하트 아이콘 -->
+                    <a href="{% url 'users:user_liked_products' member.username %}" class="profile-link">관심목록</a>
+                </h3>
+                <p class="profile-stat-count">{{ liked_products_count }}</p> <!-- 관심 목록 수 표시 -->
+            </div>
+        </div>
+
+        <!-- 팔로워 수와 팔로우 수 -->
+        <div class="d-flex justify-content-center">
+            <div class="profile-stat-item">
+                <h4>팔로워</h4>
+                <p class="profile-stat-count">{{ member.user_followers.count }}</p>
+            </div>
+            <div class="profile-stat-item">
+                <h4>팔로잉</h4>
+                <p class="profile-stat-count">{{ member.user_followings.count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div class="text-center">
+        {% if request.user == member %}
+        <div class="profile-actions">
+            <a class="btn btn-dark" href="{% url 'accounts:update' %}">회원정보수정</a>
+
+            <form action="{% url 'accounts:delete' %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">회원탈퇴</button>
+            </form>
+        </div>
+        {% else %}
+        <form action="{% url 'users:follow' member.pk %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            {% if request.user in member.user_followers.all %}
+            <button type="submit" class="btn btn-secondary">언팔로우</button>
+            {% else %}
+            <button type="submit" class="btn btn-primary">팔로우</button>
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
 </div>
+<br><br>
+
+<style>
+/* 프로필 이미지 스타일 */
+.profile-image {
+    width: 180px; /* 크기를 키움 */
+    height: 180px; /* 크기를 키움 */
+    object-fit: cover;
+    border: 5px solid #f8f9fa;
+    border-radius: 50%; /* 완전한 원형 */
+    margin-bottom: 20px;
+}
+
+.profile-image-placeholder {
+    width: 180px; /* 크기를 키움 */
+    height: 180px; /* 크기를 키움 */
+    background-color: #e9ecef;
+    border: 5px solid #f8f9fa;
+    border-radius: 50%; /* 완전한 원형 */
+    display: inline-block;
+    text-align: center;
+    line-height: 180px;
+    color: #6c757d;
+    font-size: 2.5rem; /* 텍스트 크기 조정 */
+    margin-bottom: 20px;
+}
+
+/* 프로필 헤더 */
+.profile-header h1 {
+    font-size: 2.5rem;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.profile-header h2 {
+    font-size: 0.875rem; /* 더 작은 글씨 */
+    color: #6c757d; /* 색상 통일 */
+    font-weight: 300; /* 더 얇은 글씨 */
+}
+
+/* 프로필 통계 */
+.profile-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px; /* 통일된 사이즈 */
+}
+
+.profile-stat-item h3, .profile-stat-item h4 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+.profile-stat-count {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* 아이콘 스타일 */
+.bi {
+    font-size: 1.5rem; /* 아이콘 크기 조정 */
+    margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+/* 프로필 액션 버튼 */
+.profile-actions .btn {
+    margin: 5px;
+    font-weight: 500;
+}
+
+.profile-actions .btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.profile-actions .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.profile-actions .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.profile-actions .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* 프로필 링크 스타일 */
+.profile-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.profile-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
 {% endblock content %}
