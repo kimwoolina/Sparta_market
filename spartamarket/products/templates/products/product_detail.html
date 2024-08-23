@@ -1,74 +1,136 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+    <div class="container mt-5 px-5" style="padding-left: 400px; padding-right: 400px;"> <!-- 좌우 패딩을 두 배로 증가시킴 -->
 
-    <h2>글 상세 페이지</h2>
-    <p>제목: {{ product.title }}</p>
-    <p>작성자: {{ product.author.username }}</p>
+        <!-- 상품 상세 카드 -->
+        <div class="card mb-4 mx-auto" style="max-width: 730px;"> <!-- 카드 너비를 제품 이미지와 맞춤 -->
+            <div class="card-body">
+                <!-- 상품 이미지 -->
+                {% if product.image %}
+                    <div class="text-center mb-3"> <!-- 중앙 정렬을 위해 div 추가 -->
+                        <img src="{{ product.image.url }}" class="img-fluid" alt="Product Image" style="width: 100%; height: auto; max-width: 730px;">
+                    </div>
+                {% endif %}
 
-    {% if product.image %}
-        <img src="{{ product.image.url }}">
-    {% endif %}
+                <!-- 작성자 정보 -->
+                <div class="d-flex align-items-center mb-3">
+                    {% if product.author.profile_image %}
+                        <img src="{{ product.author.profile_image.url }}" class="rounded-circle me-3" alt="Author Image" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'images/default/default_profile_image.png' %}" class="rounded-circle me-3" alt="Default Author Image" style="width: 50px; height: 50px;">
+                    {% endif %}
+                    <div style="margin-left: 15px;"> <!-- 프로필 사진과 작성자 이름 사이의 간격 조정 -->
+                        <h5 class="card-subtitle mb-2 text-muted">
+                            <a href="{% url 'users:profile' product.author.username %}" class="text-decoration-none text-dark">{{ product.author.username }}</a>
+                        </h5>
+                    </div>
+                </div>
 
-    <p>가격: {{ product.price }}원</p>
-    <p>내용: {{ product.content }}</p>
-    <p>작성일시: {{ product.created_at }}</p>
-    <p>수정일시: {{ product.updated_at }}</p>
+                <!-- 구분선 -->
+                <hr class="my-3">
 
-    <p>{{ like_count }}명이 이 글을 좋아합니다.</p>
-    <p>조회수 : {{ product.view_cnt }}</p>
+                <!-- 글 제목 -->
+                <h3 class="card-title">{{ product.title }}</h3>
 
-    <!-- 해시태그 출력 -->
-    {% if product.tags.all %}
-        <p> 
-            {% for tag in product.tags.all %}
+                <!-- 작성일 -->
+                <p class="card-text" style="color: #b0b0b0; font-size: 0.875rem;">
+                    작성일시: {{ product.created_at }}{% if product.created_at != product.updated_at %} (수정됨){% endif %}
+                </p>
+
+                <!-- 상품 세부 정보 -->
+                <p class="card-text" style="font-size: 1.5rem;"><strong>{{ product.price }}원</strong></p> <!-- 가격 글자 크기 조정 -->
+                <p class="card-text">{{ product.content }}</p>
                 
-                    #{{ tag.name }}
+                <br><br>
+
+                <!-- 좋아요 아이콘 -->
+                <p class="card-text">
+                    <form action="{% url 'products:detail_like' product.pk %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        {% if user in product.likes.all %}
+                            <button type="submit" class="btn btn-link text-danger">
+                                <i class="bi bi-heart-fill"></i> <!-- 채워진 하트 아이콘 -->
+                            </button>
+                        {% else %}
+                            <button type="submit" class="btn btn-link">
+                                <i class="bi bi-heart"></i> <!-- 빈 하트 아이콘 -->
+                            </button>
+                        {% endif %}
+                    </form>
+                    <span>{{ like_count }}명이 이 글을 좋아합니다.</span>
+                </p>
+
+                <!-- 조회수 -->
+                <p class="card-text text-muted" style="font-size: 0.875rem;">
+                    <!-- 조회수 아이콘 -->
+                    <i class="bi bi-eye"></i> <span>{{ product.view_cnt }}</span>
+                </p>
                 
-            {% endfor %}
-        </p>
-    {% endif %}
+                <!-- 해시태그 출력 -->
+                {% if product.tags.all %}
+                    <p class="card-text">
+                        {% for tag in product.tags.all %}
+                            <span class="badge bg-secondary text-light me-2">#{{ tag.name }}</span>
+                        {% endfor %}
+                    </p>
+                {% endif %}
 
-    <a href="{% url 'products:products' %}">목록보기</a>
+                <!-- 버튼들 중앙 정렬 -->
+                <div class="text-center mb-3">
+                    <a href="{% url 'products:products' %}" class="btn btn-light border">목록보기</a> <!-- 목록보기 버튼 색상 변경 -->
+                </div>
 
-    {% if user == product.author %}
-        <a href="{% url 'products:update' product.pk %}">
-            <button>수정하기</button>
-        </a>
+                {% if user == product.author %}
+                    <div class="text-center mb-3">
+                        <a href="{% url 'products:update' product.pk %}" class="btn btn-light border">수정하기</a> <!-- 수정하기 버튼 색상 변경 -->
+                        
+                        <form action="{% url 'products:delete' product.pk %}" method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <input type="submit" value="삭제" class="btn btn-light border"> <!-- 삭제 버튼 색상 변경 -->
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
 
-        <form action="{% url 'products:delete' product.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="삭제">
-        </form>
-    {% endif %}
-    
-    {% if request.user.is_authenticated %}
-    <br>
-    <hr>
-    <h3>댓글 {{ comments|length }}개</h3>
-    <form action="{% url 'products:comment_create' product.pk %}" method="POST">
-        {% csrf_token %}
-        {{ comment_form.as_p }}
-        <input type="submit" value="댓글작성">
-    </form>
-    {% endif %}
-
-    {% for comment in comments %}
-    <ul>
-        <li>{{ comment.content }} - {{ comment.user.username }}</li>
-
-        {% if user == comment.user %}
-        <form action="{% url 'products:comment_delete' product.pk comment.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="삭제">
-        </form>
+        <!-- 댓글 섹션 -->
+        {% if request.user.is_authenticated %}
+            <h3 class="mb-3 text-center" style="font-size: 1.25rem; max-width: 730px; margin-left: auto; margin-right: auto;">댓글 {{ comments|length }}개</h3> <!-- 댓글 수 글자 크기 조정 및 여백 조정 -->
+            <form action="{% url 'products:comment_create' product.pk %}" method="POST" class="mb-4" style="max-width: 730px; margin-left: auto; margin-right: auto;"> <!-- 댓글 작성란 여백 조정 -->
+                {% csrf_token %}
+                <div class="d-flex align-items-start">
+                    <textarea name="content" class="form-control me-3" rows="3" placeholder="댓글을 입력하세요" style="flex-grow: 1; margin-right: 15px;"></textarea> <!-- 댓글 입력창 -->
+                    <input type="submit" value="댓글 작성" class="btn btn-primary"> <!-- 댓글 작성 버튼 -->
+                </div>
+            </form>
         {% endif %}
-        
-    </ul>
 
-    {% empty %}
-    <p>댓글이 없습니다.</p>
-
-    {% endfor %}
-
+        {% for comment in comments %}
+            <div class="card mb-2 mx-auto" style="max-width: 730px;"> <!-- 댓글 카드 너비를 제품 이미지와 맞춤 -->
+                <div class="card-body">
+                    <p class="card-text">{{ comment.content }}</p>
+                    <footer class="blockquote-footer">
+                        {% if comment.user.profile_image %}
+                            <img src="{{ comment.user.profile_image.url }}" class="rounded-circle me-2" alt="Commenter Image" style="width: 30px; height: 30px; object-fit: cover;">
+                        {% else %}
+                            <img src="{% static 'images/default/default_profile_image.png' %}" class="rounded-circle me-2" alt="Default Commenter Image" style="width: 30px; height: 30px;">
+                        {% endif %}
+                        {{ comment.user.username }}
+                        {% if user == comment.user %}
+                            <form action="{% url 'products:comment_delete' product.pk comment.pk %}" method="POST" class="d-inline">
+                                {% csrf_token %}
+                                <input type="submit" value="삭제" class="btn btn-light border btn-sm ms-2"> <!-- 댓글 삭제 버튼 색상 변경 -->
+                            </form>
+                        {% endif %}
+                    </footer>
+                </div>
+            </div>
+        {% empty %}
+            <br><br>
+            <p class="text-center text-muted">댓글이 없습니다.</p> 
+            <br><br><br>
+        {% endfor %}
+    </div>
 {% endblock content %}

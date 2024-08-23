@@ -140,3 +140,15 @@ def like(request, pk):
             product.like_users.add(request.user)  # 좋아요
         return redirect("products:products")
     return redirect("accounts:login")
+
+# 상세 페이지에서 좋아요
+@require_POST
+def detail_like(request, pk):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=pk)
+        if product.like_users.filter(pk=request.user.pk).exists():
+            product.like_users.remove(request.user)  # 좋아요 취소
+        else:
+            product.like_users.add(request.user)  # 좋아요
+        return redirect("products:product_detail", pk=product.pk)  # pk를 포함하여 리다이렉트
+    return redirect("accounts:login")

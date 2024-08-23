@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5"> <!-- Margin-top을 증가시켜서 상단 여백 확보 -->
     <h2 class="page-title">New Product</h2>
 
     <form action="{% url 'products:create' %}" method="POST" enctype="multipart/form-data" class="product-form">
@@ -21,47 +21,49 @@
 
     body {
         font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     .container {
-        max-width: 500px; /* Decrease container width */
+        max-width: 700px; /* 컨테이너 너비 조정 */
         margin: auto;
-        padding: 0 200px !important; /* Adjust horizontal padding */
+        padding: 0 40px; /* 좌우 패딩 줄이기 */
     }
 
     .page-title {
-        font-size: 2rem;
-        margin-top: 100px !important; /* Top margin */
+        font-size: 2rem; /* 제목 크기 조정 */
+        margin-top: 60px; /* 상단 여백 조정 */
         margin-bottom: 30px;
         color: #333;
         text-align: center;
     }
 
     .product-form .form-group {
-        margin-bottom: 25px;
+        margin-bottom: 20px; /* 폼 그룹 간격 조정 */
     }
 
     .product-form .form-group input,
     .product-form .form-group select,
     .product-form .form-group textarea {
         width: 100%;
-        padding: 10px; /* Adjust padding */
+        padding: 10px; /* 패딩 조정 */
         border: 1px solid #ced4da;
-        border-radius: 6px;
+        border-radius: 8px; /* 경계 반경 조정 */
         box-sizing: border-box;
     }
 
-    /* Adjust size for the price input field */
+    /* 가격 입력 필드 크기 조정 */
     .product-form .form-group input[name="price"] {
         width: auto;
-        max-width: 150px; /* Set max-width for price input */
-        padding: 8px; /* Adjust padding */
+        max-width: 150px; /* 최대 너비 조정 */
+        padding: 8px; /* 패딩 조정 */
     }
 
     .product-form .form-group input[type="file"] {
-        padding: 10px;
+        padding: 8px;
         border: 1px solid #ced4da;
-        border-radius: 6px;
+        border-radius: 8px; /* 경계 반경 조정 */
         background-color: #f8f9fa;
         cursor: pointer;
     }
@@ -70,13 +72,14 @@
         display: flex;
         justify-content: center;
         gap: 15px;
+        margin-top: 20px;
     }
 
     .btn {
         display: inline-block;
-        padding: 12px 25px;
-        font-size: 1rem;
-        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 0.875rem; /* 버튼 글자 크기 조정 */
+        border-radius: 8px; /* 경계 반경 조정 */
         text-align: center;
         text-decoration: none;
         border: none;
@@ -97,14 +100,14 @@
     }
 
     .btn-back {
-        background-color: #17a2b8; /* Change background color */
+        background-color: #17a2b8;
         color: #fff;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: background-color 0.3s, box-shadow 0.3s;
     }
 
     .btn-back:hover {
-        background-color: #138496; /* Darker shade on hover */
+        background-color: #138496;
         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
     }
 </style>
