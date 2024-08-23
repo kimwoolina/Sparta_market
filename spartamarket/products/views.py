@@ -65,6 +65,8 @@ def create(request):
             product = form.save(commit=False)
             product.author = request.user
             product.save()
+            tags = form.cleaned_data['tags']
+            product.tags.set(tags)  # ManyToManyField에 태그 설정
             return redirect("products:product_detail", product.pk)
     else:
         form = ProductForm()

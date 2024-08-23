@@ -46,8 +46,12 @@ class Product(models.Model):
         self.save()
 
 
-    # 게시물에 중복된 해시태그가 없도록 확인
-    def clean(self):
+    # 저장할 때 게시물에 중복된 해시태그가 없도록 확인  
+    def save(self, *args, **kwargs):
+        # Save the product before running clean
+        super().save(*args, **kwargs)
+
+        # Check for duplicate tags
         if len(self.tags.all()) != len(set(self.tags.all())):
             raise ValidationError("게시물에 중복된 해시태그를 설정할 수 없습니다.")
 

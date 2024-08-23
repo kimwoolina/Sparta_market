@@ -16,7 +16,18 @@
     <p>수정일시: {{ product.updated_at }}</p>
 
     <p>{{ like_count }}명이 이 글을 좋아합니다.</p>
-    <p>조회수 : {{product.view_cnt}}</p>
+    <p>조회수 : {{ product.view_cnt }}</p>
+
+    <!-- 해시태그 출력 -->
+    {% if product.tags.all %}
+        <p> 
+            {% for tag in product.tags.all %}
+                
+                    #{{ tag.name }}
+                
+            {% endfor %}
+        </p>
+    {% endif %}
 
     <a href="{% url 'products:products' %}">목록보기</a>
 
@@ -47,7 +58,7 @@
         <li>{{ comment.content }} - {{ comment.user.username }}</li>
 
         {% if user == comment.user %}
-        <form action="{% url 'products:comment_delete' product.pk comment.pk%}" method="POST">
+        <form action="{% url 'products:comment_delete' product.pk comment.pk %}" method="POST">
             {% csrf_token %}
             <input type="submit" value="삭제">
         </form>
