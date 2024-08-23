@@ -1,0 +1,42 @@
+/* static/css/base_style.css */
+/*
+.navbar {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+}
+
+@media (min-width: 992px) {
+    .navbar {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+}
+
+img {
+    width: 200px;
+}
+*/
+.social-icon {
+    font-size: 1.5rem;
+    color: #000;
+    margin: 10px;
+}
+
+.social-icon:hover {
+    color: #0056b3;
+}
+
+footer {
+    padding: 30px 0;
+}
+
+.footer-icons {
+    margin-bottom: 20px;
+}
+
+.navbar-brand img {
+    max-height: 40px;
+    max-width: 150px;
+}
+
+

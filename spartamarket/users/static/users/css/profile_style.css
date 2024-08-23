@@ -1,0 +1,98 @@
+/* 프로필 이미지 스타일 */
+.profile-image {
+    width: 180px !important;
+    height: 180px !important;
+    object-fit: cover;
+    border: 5px solid #f8f9fa !important;
+    border-radius: 50% !important;
+    margin-bottom: 20px !important;
+}
+
+.profile-image-placeholder {
+    width: 180px; /* 크기를 키움 */
+    height: 180px; /* 크기를 키움 */
+    background-color: #e9ecef;
+    border: 5px solid #f8f9fa;
+    border-radius: 50%; /* 완전한 원형 */
+    display: inline-block;
+    text-align: center;
+    line-height: 180px;
+    color: #6c757d;
+    font-size: 2.5rem; /* 텍스트 크기 조정 */
+    margin-bottom: 20px;
+}
+
+/* 프로필 헤더 */
+.profile-header h1 {
+    font-size: 2.5rem;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.profile-header h2 {
+    font-size: 0.875rem; /* 더 작은 글씨 */
+    color: #6c757d; /* 색상 통일 */
+    font-weight: 300; /* 더 얇은 글씨 */
+}
+
+/* 프로필 통계 */
+.profile-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px; /* 통일된 사이즈 */
+}
+
+.profile-stat-item h3, .profile-stat-item h4 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+.profile-stat-count {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* 아이콘 스타일 */
+.bi {
+    font-size: 1.5rem; /* 아이콘 크기 조정 */
+    margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+/* 프로필 액션 버튼 */
+.profile-actions .btn {
+    margin: 5px;
+    font-weight: 500;
+}
+
+.profile-actions .btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.profile-actions .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.profile-actions .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.profile-actions .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* 프로필 링크 스타일 */
+.profile-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.profile-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
