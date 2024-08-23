@@ -4,7 +4,11 @@
 <div class="container my-4">
     <div class="profile-header text-center">
         <br>
+        {% if request.user == member %}
         <h1>안녕하세요, {{ member.username }}님!</h1>
+        {% else %}
+        <h1>{{ member.username }}님의 프로필</h1>
+        {% endif %}
         <br>
 
         <!-- 프로필 이미지 -->

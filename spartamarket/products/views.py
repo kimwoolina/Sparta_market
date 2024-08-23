@@ -85,7 +85,7 @@ def update(request, pk):
         return redirect("products:products")  # Redirect if the user is not the author
 
     if request.method == "POST":
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect("products:product_detail", product.pk)

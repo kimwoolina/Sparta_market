@@ -1,13 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Edit Product</h2>
-
-<form action="{% url 'products:update' product.pk %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <button type="submit">수정</button>
-</form>
-
-<a href="{% url 'products:product_detail' product.pk %}">이전으로</a>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 수정</title>
+    <style>
+        .edit-product-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto; /* 가운데 정렬을 위한 여백 추가 */
+        }
+        .edit-product-container h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            color: #333;
+            text-align: center;
+        }
+        .edit-product-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .edit-product-container form p {
+            margin-bottom: 1rem;
+        }
+        .edit-product-container form p input,
+        .edit-product-container form p select,
+        .edit-product-container form p textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .edit-product-container form p input:focus,
+        .edit-product-container form p select:focus,
+        .edit-product-container form p textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.2);
+        }
+        .edit-product-container form .submit-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        .edit-product-container form .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .edit-product-container .back-link {
+            display: block;
+            margin-top: 1rem;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .edit-product-container .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-product-container">
+        <h2>제품 수정</h2>
+        <form action="{% url 'products:update' product.pk %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-btn">수정</button>
+        </form>
+        <a href="{% url 'products:product_detail' product.pk %}" class="back-link">이전으로</a>
+    </div>
+    <br><br><br>
+</body>
+</html>
 {% endblock content %}
