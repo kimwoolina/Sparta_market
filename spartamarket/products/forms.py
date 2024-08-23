@@ -10,6 +10,13 @@ class ProductForm(forms.ModelForm):
         fields = "__all__"
         exclude = ("author", "like_users", "view_cnt")
 
+    def __init__(self, *args, **kwargs):
+        # 기존의 태그를 표시하기 위해 인스턴스를 전달받아 초기화합니다.
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            tags = self.instance.tags.values_list('name', flat=True)
+            self.initial['tags'] = '#'.join(tags)
+
     def clean_tags(self):
         tags = self.cleaned_data.get('tags', '')
         tag_names = [tag.strip() for tag in tags.split('#') if tag.strip()]
