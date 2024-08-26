@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
     <div class="container mt-5 px-5" style="padding-left: 400px; padding-right: 400px;"> <!-- 좌우 패딩을 두 배로 증가시킴 -->
@@ -36,7 +37,7 @@
 
                 <!-- 작성일 -->
                 <p class="card-text" style="color: #b0b0b0; font-size: 0.875rem;">
-                    작성일시: {{ product.created_at }}{% if product.created_at != product.updated_at %} (수정됨){% endif %}
+                    작성일시: {{ product.created_at|date:"Y-m-d H:i:s" }}{% if product.created_at|date_equals:product.updated_at %} {% else %} (수정됨){% endif %}
                 </p>
 
                 <!-- 상품 세부 정보 -->
