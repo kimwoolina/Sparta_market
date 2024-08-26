@@ -69,8 +69,8 @@ To set up and run the project, follow these steps:
 ## Service
 **홈 화면** 'http://127.0.0.1:8000/index/'
 <img width="1439" alt="스크린샷 2024-08-26 오후 5 41 33" src="https://github.com/user-attachments/assets/8f103c42-6b52-49bd-a7ed-7eb9e838c8f1">
-
 <br>
+
 **물품 목록 화면** 'http://127.0.0.1:8000/products/'
 <img width="1423" alt="스크린샷 2024-08-26 오후 5 45 32" src="https://github.com/user-attachments/assets/d1210f69-f1b5-4fd9-a41e-7ecc5f77ac53">
 <img width="1427" alt="스크린샷 2024-08-26 오후 5 45 53" src="https://github.com/user-attachments/assets/2b081b4c-333d-4246-950a-72b8a4372785">
@@ -107,9 +107,25 @@ To set up and run the project, follow these steps:
 **회원 정보 수정 페이지** 'http://127.0.0.1:8000/accounts/update/'
 <img width="1408" alt="스크린샷 2024-08-26 오후 5 55 03" src="https://github.com/user-attachments/assets/66784b20-4084-4be1-8566-9e04358feb14">
 <br>
- 
+
+**비밀번호 변경 화면** 'http://127.0.0.1:8000/accounts/password/'
+<img width="1413" alt="스크린샷 2024-08-26 오후 5 59 42" src="https://github.com/user-attachments/assets/46b643ae-a20f-4c13-8b23-e2e8620ba294">
+<br>
+
+**글 작성 화면** 'http://127.0.0.1:8000/products/create/'
+<img width="1404" alt="스크린샷 2024-08-26 오후 6 03 37" src="https://github.com/user-attachments/assets/ef32bd3f-9d51-4a7f-a9d7-e085d3c978a3">
+<br>
+
+**글 상세 페이지** 'http://127.0.0.1:8000/products/<productId>/'
+<img width="1422" alt="스크린샷 2024-08-26 오후 6 01 21" src="https://github.com/user-attachments/assets/76654d7c-e4f7-4e07-bd6f-d91d1c0eafea">
+<br>
+
+**글 상세 페이지 - 댓글창**
+<img width="1417" alt="스크린샷 2024-08-26 오후 6 02 19" src="https://github.com/user-attachments/assets/72353617-d1d6-48ef-a227-46e1f7f3368a">
+<br>
+
 **검색 기능** 'http://127.0.0.1:8000/products/search/?query=<검색어>'
 <img width="1437" alt="스크린샷 2024-08-26 오후 5 57 24" src="https://github.com/user-attachments/assets/dd1da779-bf9d-4294-a78b-5bf27760b2ce">
-
+<br>
 
 
