@@ -162,7 +162,7 @@ def detail_like(request, pk):
 # 검색
 def search(request):
     form = SearchForm(request.GET or None)
-    products = Product.objects.none()  # 기본적으로 빈 쿼리셋
+    products = Product.objects.none() 
     
     if form.is_valid():
         query = form.cleaned_data['query']
