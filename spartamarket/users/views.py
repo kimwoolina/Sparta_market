@@ -10,7 +10,8 @@ def users(request):
 
 def profile(request, username):
     member = get_object_or_404(get_user_model(), username=username)
-    
+    print(member.followers.count())
+
     # 사용자가 등록한 물품 수
     products_cnt = member.products.count()
     
@@ -35,6 +36,7 @@ def follow(request, user_id):
                 member.user_followers.remove(request.user)
             else:
                 member.user_followers.add(request.user)
+                request.user.user_followings.add(member)  # 팔로잉 관계 추가
         return redirect("users:profile", username=member.username)
     return redirect("accounts:login")
 
