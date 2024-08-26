@@ -82,6 +82,7 @@ To set up and run the project, follow these steps:
 
 **인기순 정렬 기능** 'http://127.0.0.1:8000/products/products/?sort=popular'
 <img width="1427" alt="스크린샷 2024-08-26 오후 5 48 48" src="https://github.com/user-attachments/assets/05482d26-7289-400e-8fb0-fd7be4060d85">
+sorting 기준: 좋아요 > 조회수 순
 <br>
 
 **회원가입 화면** 'http://127.0.0.1:8000/accounts/signup/'
