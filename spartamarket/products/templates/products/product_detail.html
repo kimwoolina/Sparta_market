@@ -117,7 +117,7 @@
                         {% else %}
                             <img src="{% static 'images/default/default_profile_image.png' %}" class="rounded-circle me-2" alt="Default Commenter Image" style="width: 30px; height: 30px;">
                         {% endif %}
-                        {{ comment.user.username }}
+                        <a href="{% url 'users:profile' comment.user.username %}" class="text-decoration-none text-dark">{{ comment.user.username }}</a>
                         {% if user == comment.user %}
                             <form action="{% url 'products:comment_delete' product.pk comment.pk %}" method="POST" class="d-inline">
                                 {% csrf_token %}
