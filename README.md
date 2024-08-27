@@ -28,7 +28,8 @@
 <br>
 
 ## Model
-<img width="991" alt="스크린샷 2024-08-27 오후 5 23 24" src="https://github.com/user-attachments/assets/edcb5f63-cd98-45b2-a897-37c7cdb1f7d4">
+<img width="1065" alt="스크린샷 2024-08-27 오후 6 55 25" src="https://github.com/user-attachments/assets/7e7a676a-9502-4674-a346-f255177079ae">
+
 
 <br><br>
 
