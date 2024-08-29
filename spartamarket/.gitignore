@@ -382,5 +382,11 @@ $RECYCLE.BIN/
 # SQLite Database
 db.sqlite3
 
+# spartamarket/media/images/ 경로의 모든 파일 무시
+#spartamarket/media/images/*
+
+# default 디렉토리 안의 파일들은 무시하지 않음
+!spartamarket/media/images/default/
+!spartamarket/media/images/default/**
 
 # End of https://www.toptal.com/developers/gitignore/api/python,venv,visualstudiocode,pycharm,macos,windows
