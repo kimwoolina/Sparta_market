@@ -136,6 +136,11 @@ sorting 기준: 좋아요 > 조회수 순
 
 **검색 기능** `http://127.0.0.1:8000/products/search/?query=<검색어>`
 <img width="1437" alt="스크린샷 2024-08-26 오후 5 57 24" src="https://github.com/user-attachments/assets/dd1da779-bf9d-4294-a78b-5bf27760b2ce">
-<br>
+<br><br>
+
+## Demo Video
+
+[![Demo Video](https://img.youtube.com/vi/wYY6EgzDRoU/0.jpg)](http://www.youtube.com/watch?v=wYY6EgzDRoU)
+
 
 
