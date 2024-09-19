@@ -75,7 +75,7 @@ To set up and run the project, follow these steps:
     [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 <br><br><br>
 
-## Service
+## UI Screenshot
 **홈 화면** `http://127.0.0.1:8000/index/`
 <img width="1439" alt="스크린샷 2024-08-26 오후 5 41 33" src="https://github.com/user-attachments/assets/8f103c42-6b52-49bd-a7ed-7eb9e838c8f1">
 <br><br>
